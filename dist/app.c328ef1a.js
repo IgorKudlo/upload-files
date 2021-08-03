@@ -118,12 +118,51 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"upload.js":[function(require,module,exports) {
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.upload = upload;
+
+function upload(selector) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var input = document.querySelector(selector);
+  var open = document.createElement("button");
+  open.classList.add("btn");
+  open.textContent = "Открыть";
+
+  if (options.multi) {
+    input.setAttribute("multiple", true);
+  }
+
+  if (options.accept && Array.isArray(options.accept)) {
+    input.setAttribute("accept", options.accept.join(","));
+  }
+
+  input.insertAdjacentElement("afterend", open);
+
+  var triggerInput = function triggerInput() {
+    return input.click();
+  };
+
+  var changeHandler = function changeHandler(event) {
+    console.log(event);
+  };
+
+  open.addEventListener("click", triggerInput);
+  input.addEventListener("change", changeHandler);
+}
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
 
-require("./upload.js");
-},{"./upload.js":"upload.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var _upload = require("./upload");
+
+(0, _upload.upload)("#file", {
+  multi: true,
+  accept: [".png", ".jpg", ".jpeg", ".gif"]
+});
+},{"./upload":"upload.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -151,7 +190,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58714" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60567" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
